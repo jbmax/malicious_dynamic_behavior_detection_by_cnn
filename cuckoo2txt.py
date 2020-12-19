@@ -40,7 +40,7 @@ class Cuckoo2Txt(object):
     def _convert_arguments_full(self, arguments):
         arg_parts = list()
         for val in arguments.values():
-            if not isinstance(val, (str, unicode)):
+            if not isinstance(val, str):
                 arg_parts.append(str(val))
             else:
                 arg_parts.append(json.dumps(val))
@@ -55,7 +55,7 @@ class Cuckoo2Txt(object):
                 continue
             except:
                 pass
-            if not isinstance(val, (str, unicode)):
+            if not isinstance(val, str):
                 arg_parts.append(str(val))
             else:
                 arg_parts.append(json.dumps(val))
@@ -74,10 +74,11 @@ class Cuckoo2Txt(object):
             parts.extend(self._convert_arguments_simplify(arguments))
             try:
                 line = " ".join(parts)
+                lines.append(line)
             except:
                 for part in parts:
-                    print part
-            lines.append(line)
+                    print(part)
+            
         return "\n".join(lines)
 
     def convert(self, filepath):
@@ -145,6 +146,7 @@ class Cuckoo2Txt(object):
             t.join()
             alogger.info("finish convert one report")
 
+    # 通过多进程方式并行进行转换
     def deal_process(self, func):
         alogger.info("=======start convert cuckoo to txt=======")
         plist = []
@@ -153,7 +155,7 @@ class Cuckoo2Txt(object):
             for mfile in files:
                 while len(plist) >= max_process:
                     for p in plist:
-                        p.join(1.0)
+                        p.join(1.0) # 等待当前进程结束
                         if not p.is_alive():
                             plist.remove(p)
                             alogger.info("finish convert one report")
@@ -174,8 +176,8 @@ class Cuckoo2Txt(object):
 
 
 if __name__ == "__main__":
-    report_path = "data/cuckoo_reports"
-    dst_path = "data/cuckoo_report_txts"
+    report_path = "analysis_reports"
+    dst_path = "analysis_report_txts"
 
     obj = Cuckoo2Txt(report_path, dst_path)
     obj.cuckoo2txt()

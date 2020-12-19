@@ -1,6 +1,11 @@
-.idea/
-data/
-log/
-*pyc
-*json
-*txt
+.vscode
+.idea
+.ipynb_checkpoints
+analysis_cuckoo
+analysis_reports
+analysis_reports_txts
+data
+log
+*.pyc
+*.json
+*.txt
