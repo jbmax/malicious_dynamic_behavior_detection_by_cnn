@@ -1,11 +1,19 @@
+# 编译器配置文件
 .vscode
 .idea
+
+# jupyter notebook有关文件
 .ipynb_checkpoints
+*.ipynb
+
+# 需要忽略的文件夹
 analysis_cuckoo
 analysis_reports
 analysis_reports_txts
 data
 log
+
+# 某些需要忽略的特殊格式的文件
 *.pyc
 *.json
 *.txt

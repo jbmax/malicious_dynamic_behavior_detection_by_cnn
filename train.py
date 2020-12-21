@@ -9,10 +9,10 @@ import os
 
 
 def preprocess(data_dirs, document_length_limit, is_line_as_word, dev_sample_percentage):
-
+    # 载入数据集
     x_text, y = load_data_and_labels(data_dirs, document_length_limit, is_line_as_word)
 
-    # Vocabulary
+    # Vocabulary 建立本地语料库
     max_document_length = max([len(text.split(" ")) for text in x_text])
     print("max_docment_length: {}".format(max_document_length))
     max_document_length = min(document_length_limit, max_document_length)
@@ -176,8 +176,8 @@ def train(x_train, y_train, vocab_processor, x_dev, y_dev,
 
 def main():
     # Paras
-    positive_data_dir = "data/train/pos"
-    negative_data_dir = "data/train/neg"
+    positive_data_dir = "data/train/pos"    # 存放正样本的目录
+    negative_data_dir = "data/train/neg"    # 存放负样本的目录
     data_dirs = [negative_data_dir, positive_data_dir]
     out_dir = "runs"
     document_length_limit = 1000
@@ -185,11 +185,11 @@ def main():
     dev_sample_percentage = 0.1
     num_classes = len(data_dirs)
     embedding_size = 100
-    filter_sizes = [3, 4, 5]
-    stride_h = 1
-    num_filters = 128
+    filter_sizes = [3, 4, 5]    # 可选择的卷积核大小
+    stride_h = 1    # 步长
+    num_filters = 128   # 卷积核个数
     keep_prob_rate = 1.0
-    learning_rate = 1e-3
+    learning_rate = 1e-3    # 学习率
     batch_size = 32
     ecoph_num = 100
     evaluate_every = 10

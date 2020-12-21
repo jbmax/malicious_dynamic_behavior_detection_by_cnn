@@ -25,21 +25,33 @@ def clean_str(string):
     return string.strip().lower()
 
 
+# 从文件夹读取实际转换好的文本
 def get_examples_from_dir(data_dir, max_length, is_line_as_word=False):
     examples = []
+
+    # 先判断传入路径是否为文件夹
     if not os.path.isdir(data_dir):
         return examples
+
     for fname in os.listdir(data_dir):
+        # 从txt文件中读入转换好的文本
         full_path = os.path.join(data_dir, fname)
         f = open(full_path, "r")
         data = f.read()
+
+        # 统计文本中的行数(调用api的数量？)
         line_num = len(data.split("\n"))
         if line_num < 5:
             continue
+
+        # 不使用md5加密时
         if not is_line_as_word:
-            examples.append(data.strip())
+            examples.append(data.strip())   # 去掉字符串开始的注释，之后仍是一整个字符串
+        
+        # 对每行使用md5加密
         else:
             lines = data.split("\n")
+            
             # replace each line as md5
             words = [hashlib.md5(line).hexdigest() for line in lines]
             examples.append(" ".join(words[:max_length]))
@@ -78,14 +90,16 @@ def get_example_filenames_from_dir(data_dir, max_length, is_line_as_word=False):
     return examples, filenames
 
 
+# 从文件中载入数据及标签的函数
 def load_data_and_labels(data_dirs, max_document_length, is_line_as_word):
+    # data_dirs中第一个路径为负样本，第二个为正样本
     x_text = []
     y = []
-    labels = np.eye(len(data_dirs), dtype=np.int32).tolist()
+    labels = np.eye(len(data_dirs), dtype=np.int32).tolist()    # 生成对角矩阵并按行转换为列表
     for i, data_dir in enumerate(data_dirs):
         examples = get_examples_from_dir(data_dir, max_document_length, is_line_as_word)
-        x_text += [clean_str(sent) for sent in examples]
-        y += [labels[i]] * len(examples) 
+        x_text += [clean_str(sent) for sent in examples]    # 利用正则表达式进行一些处理
+        y += [labels[i]] * len(examples)    # 对列表中的元素进行扩展（相当于进行标记）
     y = np.array(y)
     return [x_text, y]
 
