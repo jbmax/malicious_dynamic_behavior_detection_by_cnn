@@ -12,16 +12,18 @@ def preprocess(data_dirs, document_length_limit, is_line_as_word, dev_sample_per
     # 载入数据集
     x_text, y = load_data_and_labels(data_dirs, document_length_limit, is_line_as_word)
 
+    # 此处载入数据集之后x应该是列表的列表，列表中的子列表代表每个报告中的多个进程和线程对应的API调用
+
     # Vocabulary 建立本地语料库
     max_document_length = max([len(text.split(" ")) for text in x_text])
     print("max_docment_length: {}".format(max_document_length))
     max_document_length = min(document_length_limit, max_document_length)
     print("max_docment_length: {}".format(max_document_length))
-    vocab_processor = learn.preprocessing.VocabularyProcessor(max_document_length)
+    vocab_processor = learn.preprocessing.VocabularyProcessor(max_document_length)  # 使用了第三方的api接口
     x = np.array(list(vocab_processor.fit_transform(x_text)))
     print(x)
 
-    # Random
+    # Random 设置随机数种子划分训练集与测试集
     np.random.seed(100)
     shuffle_indices = np.random.permutation(np.arange(len(x_text)))
     x_shuffled = x[shuffle_indices]
