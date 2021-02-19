@@ -1,6 +1,7 @@
 # 编译器配置文件
 .vscode
 .idea
+.pytest_cache
 
 # jupyter notebook有关文件
 .ipynb_checkpoints
