@@ -27,6 +27,7 @@ def set_logger(filename, logmod):
         return logging
 
 
+# 设置日志目录参数等
 root_path = os.path.dirname(os.path.realpath(__file__))
 log_path = os.path.join(root_path, "log", "cuckoo2txt.log")
 alogger = set_logger(log_path, "CUCKOO2TXT")
@@ -40,8 +41,10 @@ class Cuckoo2Txt(object):
     def _convert_arguments_full(self, arguments):
         arg_parts = list()
         for val in arguments.values():
+            # 将非字符串属性转化为字符串
             if not isinstance(val, str):
                 arg_parts.append(str(val))
+            # 是字符串，则进行序列化处理
             else:
                 arg_parts.append(json.dumps(val))
         return arg_parts
@@ -51,7 +54,7 @@ class Cuckoo2Txt(object):
         for val in arguments.values():
             # remove address such as 0xffffffff
             try:
-                int(val, 16)
+                int(val, 16)    # 转化为十六进制
                 continue
             except:
                 pass
@@ -114,7 +117,7 @@ class Cuckoo2Txt(object):
 
                 for pid in pid_sequences:
                     for tid in tid_sequences[pid]:
-                        convert_txt += self.convert_thread(pid, tid, processes[pid]["threads"][tid])
+                        convert_txt += self.convert_thread(pid, tid, processes[pid]["threads"][tid]) + '\n'
 
                 ori_name = os.path.basename(filepath)
                 filename = ori_name.replace("json", "txt")
