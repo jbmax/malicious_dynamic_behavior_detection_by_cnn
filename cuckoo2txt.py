@@ -9,7 +9,7 @@ from threading import Thread
 from multiprocessing import Process
 from collections import defaultdict
 
-
+# 进行日志文件处理
 def set_logger(filename, logmod):
     try:
         log_size = 100000000

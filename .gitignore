@@ -9,7 +9,7 @@
 # 需要忽略的文件夹
 analysis_cuckoo
 analysis_reports
-analysis_reports_txts
+analysis_report_txts
 data
 log
 
