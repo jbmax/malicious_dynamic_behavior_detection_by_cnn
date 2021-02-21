@@ -13,6 +13,7 @@ analysis_reports
 analysis_report_txts
 data
 log
+.empty
 
 # 某些需要忽略的特殊格式的文件
 *.pyc
