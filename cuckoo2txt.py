@@ -9,6 +9,7 @@ from threading import Thread
 from multiprocessing import Process
 from collections import defaultdict
 
+
 # 进行日志文件处理
 def set_logger(filename, logmod):
     try:
@@ -137,7 +138,7 @@ class Cuckoo2Txt(object):
                     time.sleep(5)
                     for t in thlist:
                         t.join(2.0)
-                        if not t.isAlive():
+                        if not t.is_alive():
                             thlist.remove(t)
                             alogger.info("finish convert one report")
                 full_path = os.path.join(root, mfile)
